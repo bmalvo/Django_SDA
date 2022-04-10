@@ -11,7 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def get_hello(request: WSGIRequest) -> HttpResponse:
-    return HttpResponse('<h1>Hello World<h1>')
+    hello = '<h1>Hello World<h1>'
+    return render(request, template_name= 'hello_world.html', context={'hello_var':hello})
 
 
 def get_uuids_a(request: WSGIRequest) -> HttpResponse:
@@ -20,7 +21,8 @@ def get_uuids_a(request: WSGIRequest) -> HttpResponse:
 
 def get_uuids_b(request: WSGIRequest) -> JsonResponse:
     uuids = [f'{uuid4()}' for _ in range(10)]
-    return JsonResponse({'uuids':uuids})
+    return render(request, template_name='uuid.html', context={'elements': uuids})
+    # return JsonResponse({'uuids':uuids})
 
 
 def get_argument_from_path(request: WSGIRequest, x:int, y:str, z:str) -> HttpResponse:
