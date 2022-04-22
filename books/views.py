@@ -12,12 +12,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 def get_hello(request: WSGIRequest) -> HttpResponse:
     hello = '<h1>Hello World<h1>'
-    return render(request, template_name= 'hello_world.html', context={'hello_var':hello})
+    return render(request, template_name='hello_world.html', context={'hello_var': hello})
 
 
 def get_uuids_a(request: WSGIRequest) -> HttpResponse:
     uuids = [f'{uuid4()}' for _ in range(10)]
     return HttpResponse(f'uuids={uuids}')
+
 
 def get_uuids_b(request: WSGIRequest) -> JsonResponse:
     uuids = [f'{uuid4()}' for _ in range(10)]
@@ -40,22 +41,24 @@ def get_arguments_from_query(request: WSGIRequest) -> HttpResponse:
 
 @csrf_exempt
 def check_http_query_type(request: WSGIRequest) -> HttpResponse:
-    query_type = 'Unknown'
-    if request.method == 'GET':
-        query_type = 'this is GET'
-    elif request.method == 'POST':
-        query_type = 'this is POST'
-    elif request.method == 'DELETE':
-        query_type = 'this is DELETE'
-    elif request.method == 'PUT':
-        query_type = 'this is PUT'
-    return HttpResponse(query_type)
+    # query_type = 'Unknown'
+    # if request.method == 'GET':
+    #     query_type = 'this is GET'
+    # elif request.method == 'POST':
+    #     query_type = 'this is POST'
+    # elif request.method == 'DELETE':
+    #     query_type = 'this is DELETE'
+    # elif request.method == 'PUT':
+    #     query_type = 'this is PUT'
+    # return HttpResponse(query_type)
+    return render(request, template_name="methods.html", context={})
 
 
 def get_headers(request: WSGIRequest) -> JsonResponse:
     our_headers = request.headers
 
-    return JsonResponse({'headers':dict(our_headers)})
+    return JsonResponse({'headers': dict(our_headers)})
+
 
 @csrf_exempt
 def raise_error_for_fun(request: WSGIRequest) -> HttpResponse:
