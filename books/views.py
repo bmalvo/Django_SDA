@@ -3,9 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import BadRequest
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from books.models import BookAuthor, Category, Book
 
@@ -28,6 +28,14 @@ class BooksListView(ListView):
     template_name = 'books_list.html'
     model = Book
     paginate_by = 10
+
+
+class BookDetailsView(DetailView):
+    template_name = 'book_detail.html'
+    model = Book
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(Book, id=self.kwargs.get("pk"))
 
 
 def get_hello(request: WSGIRequest) -> HttpResponse:
