@@ -6,8 +6,10 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
-
 from books.models import BookAuthor, Category, Book
+import logging
+
+logger = logging.getLogger('david')
 
 
 class AuthorListBaseView(View):
@@ -15,12 +17,13 @@ class AuthorListBaseView(View):
     queryset = BookAuthor.objects.all()  # type: ignore
 
     def get(self, request: WSGIRequest, *args, **kwargs):
+        logger.debug(f'{request}DUPA!!!')
         contex = {'authors': self.queryset}
         return render(request, template_name=self.template_name, context=contex)
 
 
 class CategoryListTemplateView(TemplateView):
-    template_name ='category_list.html'
+    template_name = 'category_list.html'
     extra_context = {'categories': Category.objects.all()}  # type: ignore
 
 
