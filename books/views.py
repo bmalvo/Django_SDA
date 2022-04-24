@@ -1,13 +1,22 @@
 from uuid import uuid4
-
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import BadRequest
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views import View
+
+from books.models import BookAuthor
 
 
-# Create your views here.
-from django.views.decorators.csrf import csrf_exempt
+class AuthorListBaseView(View):
+    template_name = 'author_list.html'
+    queryset = BookAuthor.objects.all()  # type: ignore
+
+    def get(self, request: WSGIRequest, *args, **kwargs):
+        contex = {'authors': self.queryset}
+        return render(request, template_name=self.template_name, context=contex)
+
 
 
 def get_hello(request: WSGIRequest) -> HttpResponse:
