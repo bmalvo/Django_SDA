@@ -7,9 +7,9 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
-from books.forms import CategoryForm, AuthorForm
+from books.forms import CategoryForm, AuthorForm, BookForm
 from books.models import BookAuthor, Category, Book
 import logging
 
@@ -48,7 +48,7 @@ class BookDetailsView(DetailView):
 class CategoryCreateFormView(FormView):
     template_name = 'category_form.html'
     form_class = CategoryForm
-    success_url = reverse_lazy('category_list')
+    success_url = reverse_lazy('category_list.html')
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -74,8 +74,32 @@ class AuthorUpdateView(UpdateView):
         return get_object_or_404(BookAuthor, id=self.kwargs.get("pk"))
 
 
+class BookCreateView(CreateView):
+    template_name = 'book_form.html'
+    form_class = BookForm
+    success_url = reverse_lazy('books_list.html')
+
+
+class BookUpdateView(UpdateView):
+    template_name = "book_form.html"
+    form_class = BookForm
+    success_url = reverse_lazy("books_list")
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(Book, id=self.kwargs.get("pk"))
+
+
+class BookDeleteView(DeleteView):
+    template_name = "book_delete.html"
+    model = Book
+    success_url = reverse_lazy("books_list")
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(Book, id=self.kwargs.get("pk"))
+
+
 def get_hello(request: WSGIRequest) -> HttpResponse:
-    hello = '<h1>Hello World<h1>'
+    hello = '<h1> Hello World <h1>'
     return render(request, template_name='hello_world.html', context={'hello_var': hello})
 
 
