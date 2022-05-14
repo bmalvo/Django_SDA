@@ -7,7 +7,7 @@ from books.views import get_hello, get_uuids_a, get_uuids_b, get_argument_from_p
     BookDeleteView, BookUpdateView
 
 urlpatterns = [
-    path('', get_hello),
+    path('', get_hello, name='home'),
     path('uuids-a', get_uuids_a),
     path('uuids-b', get_uuids_b),
     path('path-args/<int:x>/<str:y>/<slug:z>', get_argument_from_path, name='get_from_path'),
