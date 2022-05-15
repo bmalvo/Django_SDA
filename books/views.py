@@ -97,9 +97,10 @@ class BookUpdateView(PermissionRequiredMixin, UpdateView):
         return get_object_or_404(Book, id=self.kwargs.get("pk"))
 
 
-class BookDeleteView(DeleteView):
+class BookDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = "book_delete.html"
     model = Book
+    permission_required = 'books.delete_book'
     success_url = reverse_lazy("books_list")
 
     def get_object(self, **kwargs):
