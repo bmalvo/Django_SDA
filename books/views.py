@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 
 from django.urls import reverse_lazy, reverse
@@ -34,15 +35,17 @@ class CategoryListTemplateView(TemplateView):
     extra_context = {'categories': Category.objects.all()}  # type: ignore
 
 
-class BooksListView(ListView):
+class BooksListView(PermissionRequiredMixin, ListView):
     template_name = 'books_list.html'
     model = Book
     paginate_by = 10
+    permission_required = 'books.view_book'
 
 
-class BookDetailsView(DetailView):
+class BookDetailsView(PermissionRequiredMixin, DetailView):
     template_name = 'book_detail.html'
     model = Book
+    permission_required = 'books.view_book'
 
     def get_object(self, **kwargs):
         return get_object_or_404(Book, id=self.kwargs.get("pk"))
@@ -77,15 +80,17 @@ class AuthorUpdateView(UpdateView):
         return get_object_or_404(BookAuthor, id=self.kwargs.get("pk"))
 
 
-class BookCreateView(CreateView):
+class BookCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'book_form.html'
     form_class = BookForm
     success_url = reverse_lazy('books_list.html')
+    permission_required = 'books.change_book'
 
 
-class BookUpdateView(UpdateView):
+class BookUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = "book_form.html"
     form_class = BookForm
+    permission_required = 'books.add_book'
     success_url = reverse_lazy("books_list")
 
     def get_object(self, **kwargs):
