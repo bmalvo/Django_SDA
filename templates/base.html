@@ -19,13 +19,14 @@
         <h4><a href="/">Django Team</a></h4>
     </div>
     <ul class="nav-links">
-
         {% if not user.is_authenticated %}
             <li>
                 <a href="/users/login/">Login</a>
             </li>
+        <li>
+                <a href="/users/sign-up/">Sign Up</a>
+            </li>
         {% else %}
-
             <li>
                 <a href="/users/logout">Logout</a>
             </li>
