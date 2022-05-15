@@ -46,7 +46,7 @@ bmalvo art
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="/users/login/">Home</a></li>
-      {% if not user.is_authenticated %}-->
+      {% if not user.is_authenticated %}.
         <li>
             <a href="/users/login/">Login</a>
         </li>
@@ -56,6 +56,9 @@ bmalvo art
         {% else %}
         <li>
             <a href="/users/logout">Logout</a>
+        </li>
+        <li>
+            <a href="/users/list/">Users</a>
         </li>
 
         {% endif %}
