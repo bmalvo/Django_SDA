@@ -1,4 +1,6 @@
 from uuid import uuid4
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from django.urls import reverse_lazy, reverse
@@ -99,15 +101,16 @@ class BookDeleteView(DeleteView):
         return get_object_or_404(Book, id=self.kwargs.get("pk"))
 
 
+@login_required
 def get_hello(request: WSGIRequest) -> HttpResponse:
     user: User = request.user  # type: ignore
-    password = None if user.is_anonymous else user.password
-    date = None if user.is_anonymous else user.date_joined
-    if not user.is_authenticated:
-        # raise PermissionDenied()
-        return HttpResponseRedirect(reverse('login'))
+    # password = None if user.is_anonymous else user.password
+    # date = None if user.is_anonymous else user.date_joined
+    # if not user.is_authenticated:
+    #     # raise PermissionDenied()
+    #     return HttpResponseRedirect(reverse('login'))
     is_auth: bool = user.is_authenticated
-    hello = f"Hello {user.username}. That's your password: {password}, and date your joined {date}."
+    hello = f"Hello {user.username}. That's your password: {user.password}, and date your joined {user.date_joined}."
 
     return render(request, template_name='hello_world.html', context={'hello_var': hello, "is_authen": is_auth})
 
